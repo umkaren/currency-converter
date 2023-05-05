@@ -77,7 +77,7 @@ function historicalRate() {
 function saveFavorites() {
   const base = fromCurrency.value;
   const target = targetCurrency.value;
-  
+
   const pairs = JSON.parse(localStorage.getItem("favoritePairs")) || [];
   const pair = `${base}/${target}`;
   if (pairs.includes(pair)) {
@@ -87,7 +87,26 @@ function saveFavorites() {
 
   pairs.push(pair);
   localStorage.setItem("favoritePairs", JSON.stringify(pairs));
-  const html = pairs.map((p) => `<p>${p}</p>`).join("");
+  const html = pairs.map((p) => `<button class="favorite-pair">${p}</button>`).join("");
   saveArea.innerHTML = html;
-  
+
+  const favoritePairButtons = document.querySelectorAll(".favorite-pair");
+  favoritePairButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const [selectedBase, selectedTarget] = button.textContent.split("/");
+      fromCurrency.value = selectedBase;
+      targetCurrency.value = selectedTarget;
+      getXchangeRates();
+    });
+  });
 }
+
+const savedPairs = document.querySelectorAll('#favorite-currency-pairs p');
+savedPairs.forEach((pair) => {
+  pair.addEventListener('click', () => {
+    const [base, target] = pair.textContent.split('/');
+    fromCurrency.value = base.trim();
+    targetCurrency.value = target.trim();
+    getXchangeRates();
+  });
+});
