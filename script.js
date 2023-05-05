@@ -78,6 +78,11 @@ function saveFavorites() {
   const base = fromCurrency.value;
   const target = targetCurrency.value;
 
+  if (base == target) {
+    alert('Cannot save to favorite. Selection will not convert.')
+  } else {
+
+  //check if pair exists
   const pairs = JSON.parse(localStorage.getItem("favoritePairs")) || [];
   const pair = `${base}/${target}`;
   if (pairs.includes(pair)) {
@@ -99,7 +104,7 @@ function saveFavorites() {
       getXchangeRates();
     });
   });
-}
+}}
 
 const savedPairs = document.querySelectorAll('#favorite-currency-pairs p');
 savedPairs.forEach((pair) => {
